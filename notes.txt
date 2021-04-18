@@ -1,0 +1,19 @@
+[users]
+gich
+gich@gich.com
+giich
+---
+rich -> pytester -> rich
+rich@gmail.com
+asdf
+
+---
+tester
+tester@gmail.com
+testing
+
+---
+pee
+pee@pee.com
+poopoo
+poopoo
