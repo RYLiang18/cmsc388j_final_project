@@ -22,7 +22,6 @@ from .client import MovieClient
 db = MongoEngine()
 login_manager = LoginManager()
 bcrypt = Bcrypt()
-movie_client = MovieClient(os.environ.get("OMDB_API_KEY"))
 
 from .routes import main
 
@@ -44,10 +43,10 @@ def create_app(test_config=None):
 
     # %%%%%%%%% REGISTERING BLUEPRINTS %%%%%%%%%
     from flask_app.users.routes import users
-    from flask_app.movies.routes import movies
+    from flask_app.photos.routes import photos
 
     app.register_blueprint(users)
-    app.register_blueprint(movies)
+    app.register_blueprint(photos)
     # %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
     app.register_error_handler(404, page_not_found)
