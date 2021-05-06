@@ -16,14 +16,14 @@ from datetime import datetime
 import os
 
 # local
-from .client import MovieClient
+# from .client import MovieClient
 
 
 db = MongoEngine()
 login_manager = LoginManager()
 bcrypt = Bcrypt()
 
-from .routes import main
+# from .routes import main
 
 
 def page_not_found(e):

@@ -16,8 +16,8 @@ from flask_login import (
 from .. import bcrypt
 from ..forms import (
     RegistrationForm,
-    LoginForm,
-    UpdateUsernameForm
+    LoginForm
+    # UpdateUsernameForm
 )
 
 from ..models import User

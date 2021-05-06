@@ -6,15 +6,18 @@ from flask import (
     request,
     flash
 )
-from flask_login import current_user
+from flask_login import (
+    current_user,
+    login_required
+)
 
-from .. import movie_client
+# from .. import movie_client
 from ..forms import SearchForm, PhotoForm
 from ..models import User, Comment, Photo
 from ..utils import current_time
 from werkzeug.utils import secure_filename
 
-movies = Blueprint("photos", __name__)
+photos = Blueprint("photos", __name__)
 
 
 # Default view of the page, should present all public photos posted
@@ -32,10 +35,12 @@ def index():
 @login_required
 def private_feed():
     friends = current_user.following
+    print("0000000000000000000000000000000000")
+    print(type(friends))
     if friends is None:
         flash("No friends!")
         return redirect(url_for('photos.index'))
-    photos_feed = Photos.objects(poster=refs__in=friends)
+    photos_feed = Photos.objects(poster__in=friends)
     if photos_feed is None:
         flash("No friends have posted photos")
         return redirect(url_for('photos.index'))
