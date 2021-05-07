@@ -10,7 +10,6 @@ from flask_login import (
 )
 from flask_bcrypt import Bcrypt
 from werkzeug.utils import secure_filename
-
 # stdlib
 from datetime import datetime
 import os
@@ -52,5 +51,10 @@ def create_app(test_config=None):
     app.register_error_handler(404, page_not_found)
 
     login_manager.login_view = "users.login"
+
+
+
+
+
 
     return app

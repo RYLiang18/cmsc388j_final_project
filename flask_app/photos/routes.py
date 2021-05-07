@@ -16,13 +16,100 @@ from ..forms import SearchForm, PhotoForm
 from ..models import User, Comment, Photo
 from ..utils import current_time
 from werkzeug.utils import secure_filename
+import os
 
 photos = Blueprint("photos", __name__)
+
+
+def prepopulate():
+    #### Prepopulating Users
+    fiend = User(
+    username = "FrogFiend",
+    email = "phrogGod@gmail.com",
+    password = "whereTheFr0gsAt"
+    )
+    fiend.save()
+
+    bean = User(
+        username = "BeanFreak",
+        email = "beaneeWeenee@hotmail.com",
+        password = "eatinBeansOnATuesday"
+    )
+    bean.save()
+
+    bread = User(
+        username = "BreadHead",
+        email = "LetsGetTh1sBread@aol.com",
+        password = "theyCallmeToastTheWayIBurnAllThisBread"
+    )
+    bread.save()
+
+    #### Prepopulating Photos
+
+    with open("flask_app/photos/images/phrog1.jpg", 'rb') as f:
+        frog1 = Photo (
+            poster=fiend,
+            date = current_time(),
+            image=f,
+            caption = "My man looking fresh",
+        )
+        frog1.save()
+
+    with open("flask_app/photos/images/phrog2.jpg", 'rb') as f:
+        frog2 = Photo (
+            poster=fiend,
+            date = current_time(),
+            image=f,
+            caption = "sheeeeeeesh",
+        )
+        frog2.save()
+
+    with open("flask_app/photos/images/phrog3.jpg", 'rb') as f:
+        frog3 = Photo (
+            poster=fiend,
+            date = current_time(),
+            image=f,
+            caption = "Throwback",
+        )
+        frog3.save()
+
+    with open("flask_app/photos/images/beans1.jpg", 'rb') as f:
+        beans1 = Photo (
+            poster=bean,
+            date = current_time(),
+            image=f,
+            caption = "Staying hyrdated",
+        )
+        beans1.save()
+
+    with open("flask_app/photos/images/beans2.jpg", 'rb') as f:
+        beans2 = Photo (
+            poster=bean,
+            date = current_time(),
+            image=f,
+            caption = "New kicks",
+        )
+        beans2.save()
+
+    with open("flask_app/photos/images/bread1.jpg", 'rb') as f:
+        bread1 = Photo (
+            poster=bread,
+            date = current_time(),
+            image=f,
+            caption = "Looking good",
+        )
+        bread1.save()
+
+
 
 
 # Default view of the page, should present all public photos posted
 @photos.route("/", methods=["GET", "POST"])
 def index():
+    if len(User.objects) == 0:
+        prepopulate()
+
+
     form = SearchForm()
 
     if form.validate_on_submit():
