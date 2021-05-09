@@ -1,6 +1,7 @@
 # 3rd-party packages
 from flask import Flask, render_template, request, redirect, url_for
 from flask_mongoengine import MongoEngine
+from flask_talisman import Talisman
 from flask_mail import Mail
 from flask_login import (
     LoginManager,
@@ -43,6 +44,15 @@ def create_app(test_config=None):
         MAIL_DEFAULT_SENDER='flaskmemories@gmail.com'
         ))
     mail = Mail(app)
+
+    csp = {
+        'default-src': '\'self\'',
+        'img-src': '*'
+    }
+    talisman = Talisman(app, content_security_policy=csp)
+
+
+
     app.config.from_pyfile("config.py", silent=False)
     if test_config is not None:
         app.config.update(test_config)

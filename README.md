@@ -2,6 +2,11 @@
 
 **By**: Brendan DeMilt and Richard Liang
 
+**Heroku Link*: [LINK HERE]*
+
+**Writeup Link**:https://docs.google.com/document/d/1R9IMRgVxg0MJZqnkqFnyrsDHf3aVid6f0TVvydmxdHE/edit?usp=sharing
+
+
 
 ## Description
 
