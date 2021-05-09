@@ -15,6 +15,7 @@ from flask_login import (
 from ..forms import SearchForm, PhotoForm
 from ..models import User, Comment, Photo
 from ..utils import current_time
+from ..client import get_holiday
 from werkzeug.utils import secure_filename
 import os
 
@@ -25,21 +26,21 @@ def prepopulate():
     #### Prepopulating Users
     fiend = User(
     username = "FrogFiend",
-    email = "phrogGod@gmail.com",
+    email = "ltnwkjsdljkfjal@gmail.com",
     password = "whereTheFr0gsAt"
     )
     fiend.save()
 
     bean = User(
         username = "BeanFreak",
-        email = "beaneeWeenee@hotmail.com",
+        email = "soijdljksdcnvjlsjk@hotmail.com",
         password = "eatinBeansOnATuesday"
     )
     bean.save()
 
     bread = User(
         username = "BreadHead",
-        email = "LetsGetTh1sBread@aol.com",
+        email = "eerkljngkljerng@aol.com",
         password = "theyCallmeToastTheWayIBurnAllThisBread"
     )
     bread.save()
@@ -103,18 +104,19 @@ def prepopulate():
 
 
 
-# Default view of the page, should present all public photos posted
+# Default view of the page, should present all photos posted
 @photos.route("/", methods=["GET", "POST"])
 def index():
     if len(User.objects) == 0:
         prepopulate()
 
-
+    holiday = get_holiday()
+    if holiday is not None:
+        flash("Happy {}!".format(holiday))
     form = SearchForm()
 
     if form.validate_on_submit():
         return redirect(url_for("photos.query_results", query=form.search_query.data))
-
     return render_template("index.html", form=form)
 
 # Private photo view, only shows photos from who a user follows
@@ -122,8 +124,6 @@ def index():
 @login_required
 def private_feed():
     friends = current_user.following
-    print("0000000000000000000000000000000000")
-    print(type(friends))
     if friends is None:
         flash("No friends!")
         return redirect(url_for('photos.index'))

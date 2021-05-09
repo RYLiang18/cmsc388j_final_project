@@ -21,6 +21,7 @@ from ..forms import (
 )
 
 from ..models import User
+from ..client import send_mail
 
 users = Blueprint('users', __name__)
 
@@ -37,6 +38,8 @@ def register():
         hashed = bcrypt.generate_password_hash(form.password.data).decode("utf-8")
         user = User(username=form.username.data, email=form.email.data, password=hashed)
         user.save()
+        send_mail(form.email.data, "Hi {}, welcome to Memories!".format(form.username.data),
+        "Welcome to memories!")
 
         return redirect(url_for("users.login"))
 

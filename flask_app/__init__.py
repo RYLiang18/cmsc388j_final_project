@@ -1,6 +1,7 @@
 # 3rd-party packages
 from flask import Flask, render_template, request, redirect, url_for
 from flask_mongoengine import MongoEngine
+from flask_mail import Mail
 from flask_login import (
     LoginManager,
     current_user,
@@ -14,15 +15,14 @@ from werkzeug.utils import secure_filename
 from datetime import datetime
 import os
 
-# local
-# from .client import MovieClient
+
 
 
 db = MongoEngine()
 login_manager = LoginManager()
 bcrypt = Bcrypt()
 
-# from .routes import main
+
 
 
 def page_not_found(e):
@@ -32,9 +32,21 @@ def page_not_found(e):
 def create_app(test_config=None):
     app = Flask(__name__)
 
+    app.config.update(dict(
+        DEBUG = True,
+        MAIL_SERVER = 'smtp.gmail.com',
+        MAIL_PORT = 587,
+        MAIL_USE_TLS = True,
+        MAIL_USE_SSL = False,
+        MAIL_USERNAME = 'flaskmemories@gmail.com',
+        MAIL_PASSWORD = 'badPassword',
+        MAIL_DEFAULT_SENDER='flaskmemories@gmail.com'
+        ))
+    mail = Mail(app)
     app.config.from_pyfile("config.py", silent=False)
     if test_config is not None:
         app.config.update(test_config)
+
 
     db.init_app(app)
     login_manager.init_app(app)
