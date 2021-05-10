@@ -108,7 +108,8 @@ def prepopulate():
 @photos.route("/", methods=["GET", "POST"])
 def index():
     if len(User.objects) == 0:
-        prepopulate()
+        # prepopulate()
+        pass
 
     holiday = get_holiday()
     if holiday is not None:
