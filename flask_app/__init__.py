@@ -47,16 +47,17 @@ def create_app(test_config=None):
         ))
     mail = Mail(app)
 
-    csp = {
-        'default-src': ['\'self\'',
-        '\'unsafe-inline\'',
-        'stackpath.bootstrapcdn.com',
-        'code.jquery.com',
-        'cdn.jsdelivr.net',
-        'cdnjs.cloudflare.com'],
-        'img-src': '*'
-    }
-    talisman = Talisman(app, content_security_policy=csp)
+    # csp = {
+    #     'default-src': '\'self\'',
+    #     'style-src': 'cdn.jsdelivr.net',
+    #     'script-src': 'cdn.jsdelivr.net',
+    #     'img-src': '*'
+    # }
+    # Talisman(
+    #     app, 
+    #     content_security_policy=csp, 
+    #     content_security_policy_report_uri='http://127.0.0.1:5000/csp_reports'
+    # )
 
 
 
