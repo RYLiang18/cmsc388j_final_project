@@ -62,3 +62,15 @@ class PhotoForm(FlaskForm):
     photo = profile_pic = FileField('Photo', validators=[FileRequired(), FileAllowed(['jpg', 'png'],'Images Only!')])
     #caption is optional
     caption = StringField("Caption", validators=[InputRequired(), Length(min=1, max=100)])
+
+class UpdateUsernameForm(FlaskForm):
+    username = StringField(
+        "Username", validators=[InputRequired(), Length(min=1, max=40)]
+    )
+    submit = SubmitField("Update Username")
+
+    def validate_username(self, username):
+        if username.data != current_user.username:
+            user = User.objects(username=username.data).first()
+            if user is not None:
+                raise ValidationError("That username is already taken")

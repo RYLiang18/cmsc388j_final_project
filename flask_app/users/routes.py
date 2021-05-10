@@ -16,8 +16,8 @@ from flask_login import (
 from .. import bcrypt
 from ..forms import (
     RegistrationForm,
-    LoginForm
-    # UpdateUsernameForm
+    LoginForm,
+    UpdateUsernameForm
 )
 
 from ..models import User
@@ -71,10 +71,20 @@ def login():
 @users.route("/account")
 @login_required
 def account():
+    username_form = UpdateUsernameForm()
+
+    if username_form.validate_on_submit():
+        # current_user.username = username_form.username.data
+        current_user.modify(username=username_form.username.data)
+        current_user.save()
+        return redirect(url_for("users.account"))
+
     return render_template(
         "account.html",
-        title="Account"
+        title="Account",
+        username_form=username_form,
     )
+
 
 #Logs out the user
 @users.route("/logout")

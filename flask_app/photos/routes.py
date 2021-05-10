@@ -21,6 +21,17 @@ import os
 
 photos = Blueprint("photos", __name__)
 
+from flask import send_file
+import io
+import base64
+
+@photos.context_processor
+def utility_processor():
+    def get_image(photo_object):
+        bytes_im = io.BytesIO(photo_object.image.read())
+        image = base64.b64encode(bytes_im.getvalue()).decode()
+        return image
+    return dict(get_image=get_image)
 
 def prepopulate():
     #### Prepopulating Users
@@ -116,9 +127,15 @@ def index():
         flash("Happy {}!".format(holiday))
     form = SearchForm()
 
+    all_photos = Photo.objects()
+
     if form.validate_on_submit():
         return redirect(url_for("photos.query_results", query=form.search_query.data))
-    return render_template("index.html", form=form)
+    return render_template(
+        "index.html", 
+        form=form,
+        photos = all_photos
+    )
 
 # Private photo view, only shows photos from who a user follows
 @photos.route("/feed", methods=["GET"])
@@ -128,7 +145,7 @@ def private_feed():
     if friends is None:
         flash("No friends!")
         return redirect(url_for('photos.index'))
-    photos_feed = Photos.objects(poster__in=friends)
+    photos_feed = Photo.objects(poster__in=friends)
     if photos_feed is None:
         flash("No friends have posted photos")
         return redirect(url_for('photos.index'))

@@ -1,6 +1,43 @@
 {% extends "header.html" %}
 {% block content %}
 
-<div>Landing Page</div>
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-info">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+    
+    <div class="row">
+        {{ form.csrf_token }}
+        {{ form.user(class="form-control", placeholder="Search") }}
+    </div>
+
+    <div class="card-columns">
+        {% for photo in photos %}
+            <div class="card">
+                <img
+                    class="card-img-top"
+                    src="data:image/png;base64,{{get_image(photo)}}"
+                    alt=""
+                >
+
+                <div class="card-body">
+                    <h5 class="card-title">{{photo.poster.username}}</h5>
+                </div>
+                <p class="card-text">
+                    {{photo.caption}}
+                </p>
+                <p class="card-text">
+                    <small class="text-muted">
+                        {{photo.date}}
+                    </small>
+                </p>
+            </div>
+        {% endfor %} 
+    </div>
 
 {% endblock %}
