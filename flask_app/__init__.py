@@ -16,6 +16,7 @@ from werkzeug.utils import secure_filename
 from datetime import datetime
 import os
 
+from flask_bootstrap import Bootstrap
 
 
 
@@ -32,6 +33,7 @@ def page_not_found(e):
 
 def create_app(test_config=None):
     app = Flask(__name__)
+    Bootstrap(app)
 
     app.config.update(dict(
         DEBUG = True,
