@@ -16,7 +16,14 @@
     {% endif %}
 
     {% if (user.get_id() != current_user.get_id()) and (user in current_user.following)%}
-        <button class="btn btn-primary">Unfollow</button>
+        <a 
+            class="btn btn-danger"
+            href="{{
+                url_for('users.unfollow', user=user.username)
+            }}"
+        >
+            Unfollow
+        </a>
     {% endif %}
 {% endif %}
 

@@ -124,10 +124,19 @@ def profile(user):
     return render_template("user_detail.html", user=friend, photos=friend_photos)
 
 @users.route("/follow/<user>")
+@login_required
 def follow(user):
     friend = User.objects(username=user).first()
     if friend is None:
         flash("Unable to follow! D:")
     current_user.update(add_to_set__following=friend)
     return redirect(url_for('users.profile', user=user))
-    
+
+@users.route("/unfollow/<user>")
+@login_required
+def unfollow(user):
+    enemy = User.objects(username=user).first()
+    if enemy is None:
+        flash("Unable to unfollow! D:")
+    current_user.update(pull__following=enemy)
+    return redirect(url_for('users.profile', user=user))
