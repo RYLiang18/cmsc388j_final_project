@@ -25,13 +25,13 @@ from flask import send_file
 import io
 import base64
 
-@photos.context_processor
-def utility_processor():
-    def get_image(photo_object):
-        bytes_im = io.BytesIO(photo_object.image.read())
-        image = base64.b64encode(bytes_im.getvalue()).decode()
-        return image
-    return dict(get_image=get_image)
+# @photos.context_processor
+# def utility_processor():
+#     def get_image(photo_object):
+#         bytes_im = io.BytesIO(photo_object.image.read())
+#         image = base64.b64encode(bytes_im.getvalue()).decode()
+#         return image
+#     return dict(get_image=get_image)
 
 def prepopulate():
     #### Prepopulating Users

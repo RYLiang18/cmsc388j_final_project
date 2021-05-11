@@ -5,7 +5,7 @@
         {% for result in results %}
             <li class = "list-group-item">
                 <a 
-                    href="{{ url_for('users.profile', user='result.username') }}"
+                    href="{{ url_for('users.profile', user=result.username) }}"
                 >
                     <h5>{{result.username}}</h5>
                 </a>

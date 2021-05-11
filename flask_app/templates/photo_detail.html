@@ -8,11 +8,15 @@
   <div class="col">
     <div class="card">
       <h2 class="card-header">
-        {{ photo.poster.username }}
+        <a href="{{
+          url_for('users.profile', user=photo.poster.username)
+        }}">
+          {{ photo.poster.username }}
+        </a>
       </h2>
       <img 
         class="card-img-top"
-        src="data:image/png;base64, {{get_image(photo)}}" 
+        src="data:image/png;base64, {{photo.get_b64_image()}}" 
         alt=""
       >
       <div class="card-body">

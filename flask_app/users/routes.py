@@ -20,7 +20,7 @@ from ..forms import (
     UpdateUsernameForm
 )
 
-from ..models import User
+from ..models import User, Photo
 from ..client import send_mail
 
 users = Blueprint('users', __name__)
@@ -120,4 +120,14 @@ def profile(user):
     friend = User.objects(username=user).first()
     if friend is None:
         return render_template("404")
-    return render_template("user_detail", user=friend)
+    friend_photos = Photo.objects(poster = friend)
+    return render_template("user_detail.html", user=friend, photos=friend_photos)
+
+@users.route("/follow/<user>")
+def follow(user):
+    friend = User.objects(username=user).first()
+    if friend is None:
+        flash("Unable to follow! D:")
+    current_user.update(add_to_set__following=friend)
+    return redirect(url_for('users.profile', user=user))
+    
