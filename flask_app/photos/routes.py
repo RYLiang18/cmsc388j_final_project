@@ -12,7 +12,7 @@ from flask_login import (
 )
 
 # from .. import movie_client
-from ..forms import SearchForm, PhotoForm
+from ..forms import SearchForm, PhotoForm, PhotoCommentForm
 from ..models import User, Comment, Photo
 from ..utils import current_time
 from ..client import get_holiday
@@ -156,9 +156,12 @@ def private_feed():
 @photos.route("/photos/<photo_id>", methods=["GET", "POST"])
 def photo_detail(photo_id):
     info = photo_id.split("-")
-    photo = Photo.objects(poster=photo_id[0], date=photo_id[1]).first()
+    photo = Photo.objects(
+        poster__in = User.objects(username=info[0]), 
+        date=info[1]
+    ).first()
     if photo is None:
-        return render_template("404")
+        return render_template("404.html")
 
     form = PhotoCommentForm()
     if form.validate_on_submit() and current_user.is_authenticated:

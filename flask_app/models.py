@@ -29,7 +29,7 @@ class Photo(db.Document):
     caption = db.StringField(required=True, min_length=1, max_length=100)
 
     def get_id(self):
-        return "{}-{}".format(poster,date)
+        return "{}-{}".format(self.poster.username,self.date)
 
 class Comment(db.Document):
     commenter = db.ReferenceField(User, required=True)
