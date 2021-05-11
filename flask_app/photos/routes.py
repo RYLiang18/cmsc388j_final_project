@@ -132,7 +132,7 @@ def index():
     if form.validate_on_submit():
         return redirect(url_for("users.search", query=form.user.data))
     return render_template(
-        "index.html", 
+        "index.html",
         form=form,
         photos = all_photos
     )
@@ -186,8 +186,12 @@ def new_photo():
         new_pic = form.photo.data
         filename = secure_filename(new_pic.filename)
         content_type =f'images/{filename[-3:]}'
+
+        post_user = User.objects(username=current_user.get_id()).first()
+
+
         photo = Photo(
-            poster=current_user,
+            poster=post_user,
             caption=form.caption.data,
             date=current_time(),
         )
