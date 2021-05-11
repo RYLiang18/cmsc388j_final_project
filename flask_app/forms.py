@@ -19,12 +19,12 @@ from .models import User
 
 class SearchForm(FlaskForm):
     user = StringField(
-        "User", validators=[InputRequired(), Length(min=1, max=100)]
+        "Search User", validators=[InputRequired(), Length(min=1, max=100)]
     )
     submit = SubmitField("Search")
 
 
-class PhotoComment(FlaskForm):
+class PhotoCommentForm(FlaskForm):
     text = TextAreaField(
         "Comment", validators=[InputRequired(), Length(min=5, max=500)]
     )
@@ -59,6 +59,19 @@ class LoginForm(FlaskForm):
     submit = SubmitField("Login")
 
 class PhotoForm(FlaskForm):
-    photo = profile_pic = FileField('Photo', validators=[FileRequired(), FileAllowed(['jpg', 'png'],'Images Only!')])
+    photo = FileField('Photo', validators=[FileRequired(), FileAllowed(['jpg', 'png'],'Images Only!')])
     #caption is optional
-    caption = StringField("Caption", validators=[InputRequired(), Length(min=1, max=100)])
+    caption = TextAreaField("Caption", validators=[InputRequired(), Length(min=5, max=500)])
+    submit = SubmitField("Post!")
+
+class UpdateUsernameForm(FlaskForm):
+    username = StringField(
+        "Username", validators=[InputRequired(), Length(min=1, max=40)]
+    )
+    submit = SubmitField("Update Username")
+
+    def validate_username(self, username):
+        if username.data != current_user.username:
+            user = User.objects(username=username.data).first()
+            if user is not None:
+                raise ValidationError("That username is already taken")

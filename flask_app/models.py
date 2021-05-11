@@ -4,7 +4,7 @@ from . import db, login_manager
 from . import config
 from .utils import current_time
 import base64
-
+import io
 
 @login_manager.user_loader
 def load_user(user_id):
@@ -29,7 +29,12 @@ class Photo(db.Document):
     caption = db.StringField(required=True, min_length=1, max_length=100)
 
     def get_id(self):
-        return "{}-{}".format(poster,date)
+        return "{}-{}".format(self.poster.username,self.date)
+
+    def get_b64_image(self):
+        bytes_im = io.BytesIO(self.image.read())
+        image = base64.b64encode(bytes_im.getvalue()).decode()
+        return image
 
 class Comment(db.Document):
     commenter = db.ReferenceField(User, required=True)

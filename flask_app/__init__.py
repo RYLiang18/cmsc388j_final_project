@@ -17,8 +17,6 @@ from datetime import datetime
 import os
 
 
-
-
 db = MongoEngine()
 login_manager = LoginManager()
 bcrypt = Bcrypt()
@@ -32,7 +30,6 @@ def page_not_found(e):
 
 def create_app(test_config=None):
     app = Flask(__name__)
-
     app.config.update(dict(
         DEBUG = True,
         MAIL_SERVER = 'smtp.gmail.com',
@@ -55,8 +52,6 @@ def create_app(test_config=None):
     #     'img-src': '*'
     # }
     #talisman = Talisman(app, content_security_policy=csp)
-
-
 
     app.config.from_pyfile("config.py", silent=False)
     if test_config is not None:

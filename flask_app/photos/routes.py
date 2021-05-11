@@ -12,7 +12,7 @@ from flask_login import (
 )
 
 # from .. import movie_client
-from ..forms import SearchForm, PhotoForm
+from ..forms import SearchForm, PhotoForm, PhotoCommentForm
 from ..models import User, Comment, Photo
 from ..utils import current_time
 from ..client import get_holiday
@@ -21,6 +21,17 @@ import os
 
 photos = Blueprint("photos", __name__)
 
+from flask import send_file
+import io
+import base64
+
+# @photos.context_processor
+# def utility_processor():
+#     def get_image(photo_object):
+#         bytes_im = io.BytesIO(photo_object.image.read())
+#         image = base64.b64encode(bytes_im.getvalue()).decode()
+#         return image
+#     return dict(get_image=get_image)
 
 def prepopulate():
     #### Prepopulating Users
@@ -108,16 +119,23 @@ def prepopulate():
 @photos.route("/", methods=["GET", "POST"])
 def index():
     if len(User.objects) == 0:
-        prepopulate()
+        # prepopulate()
+        pass
 
     holiday = get_holiday()
     if holiday is not None:
         flash("Happy {}!".format(holiday))
     form = SearchForm()
 
+    all_photos = Photo.objects()
+
     if form.validate_on_submit():
-        return redirect(url_for("photos.query_results", query=form.search_query.data))
-    return render_template("index.html", form=form)
+        return redirect(url_for("users.search", query=form.user.data))
+    return render_template(
+        "index.html",
+        form=form,
+        photos = all_photos
+    )
 
 # Private photo view, only shows photos from who a user follows
 @photos.route("/feed", methods=["GET"])
@@ -127,25 +145,29 @@ def private_feed():
     if friends is None:
         flash("No friends!")
         return redirect(url_for('photos.index'))
-    photos_feed = Photos.objects(poster__in=friends)
+    photos_feed = Photo.objects(poster__in=friends)
     if photos_feed is None:
         flash("No friends have posted photos")
         return redirect(url_for('photos.index'))
-    return render_template("feed", photos=photos_feed)
+    return render_template("feed.html", photos=photos_feed)
 
 
 # Detail of a photo when clicked
 @photos.route("/photos/<photo_id>", methods=["GET", "POST"])
-def movie_detail(photo_id):
+def photo_detail(photo_id):
     info = photo_id.split("-")
-    photo = Photo.objects(poster=photo_id[0], date=photo_id[1]).first()
+    photo = Photo.objects(
+        poster__in = User.objects(username=info[0]), 
+        date=info[1]
+    ).first()
     if photo is None:
-        return render_template("404")
+        return render_template("404.html")
 
     form = PhotoCommentForm()
     if form.validate_on_submit() and current_user.is_authenticated:
+        post_user = User.objects(username=current_user.get_id()).first()
         comment = Comment(
-            commenter=current_user._get_current_object(),
+            commenter=post_user,
             caption=form.text.data,
             date=current_time(),
             photo=photo
@@ -168,8 +190,12 @@ def new_photo():
         new_pic = form.photo.data
         filename = secure_filename(new_pic.filename)
         content_type =f'images/{filename[-3:]}'
+
+        post_user = User.objects(username=current_user.get_id()).first()
+
+
         photo = Photo(
-            poster=current_user,
+            poster=post_user,
             caption=form.caption.data,
             date=current_time(),
         )
@@ -177,4 +203,4 @@ def new_photo():
         photo.save()
         flash("Photo successfully posted!")
         return redirect(url_for('photos.index'))
-    return render_template("post_photo", form=form)
+    return render_template("post_photo.html", form=form)
