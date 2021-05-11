@@ -2,7 +2,7 @@
 
 **By**: Brendan DeMilt and Richard Liang
 
-**Heroku Link*: http://cmsc388j-memories.herokuapp.com/
+**Heroku Link**: http://cmsc388j-memories.herokuapp.com/
 
 **Writeup Link**:https://docs.google.com/document/d/1R9IMRgVxg0MJZqnkqFnyrsDHf3aVid6f0TVvydmxdHE/edit?usp=sharing
 
