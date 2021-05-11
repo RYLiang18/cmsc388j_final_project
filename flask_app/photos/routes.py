@@ -162,8 +162,9 @@ def movie_detail(photo_id):
 
     form = PhotoCommentForm()
     if form.validate_on_submit() and current_user.is_authenticated:
+        post_user = User.objects(username=current_user.get_id()).first()
         comment = Comment(
-            commenter=current_user._get_current_object(),
+            commenter=post_user,
             caption=form.text.data,
             date=current_time(),
             photo=photo
