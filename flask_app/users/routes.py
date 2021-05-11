@@ -94,16 +94,23 @@ def logout():
     return redirect(url_for("photos.index"))
 
 # Searches for a single user
-@users.route("/search", methods=["GET", "POST"])
-def search():
-    search_form = SearchForm()
-    if search_form.valudate_on_submit():
-        user = User.objects(username=search_form.user.data).first()
-        if user is None:
-            flash("User does not exist")
-            return redirect(url_for('photos.index'))
-        return render_template("search_results", result=user)
-    return render_template("search", search_form=search_form)
+@users.route("/search/<query>", methods=["GET", "POST"])
+def search(query):
+    users = User.objects(username=query).first()
+
+    if user is None:
+        flash("User does not exist")
+        return redirect(url_for('photos.index'))
+    
+    return render_template("search_results.html", results=users)
+    
+    # search_form = SearchForm()
+    # if search_form.validate_on_submit():
+    #     user = User.objects(username=search_form.user.data).first()
+    #     if user is None:
+            
+    #     return render_template("search_results", result=user)
+    # return render_template("search", search_form=search_form)
 
 
 # Shows friends page, including their photos

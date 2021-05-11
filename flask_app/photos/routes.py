@@ -130,7 +130,7 @@ def index():
     all_photos = Photo.objects()
 
     if form.validate_on_submit():
-        return redirect(url_for("photos.query_results", query=form.search_query.data))
+        return redirect(url_for("users.search", query=form.user.data))
     return render_template(
         "index.html", 
         form=form,
@@ -149,7 +149,7 @@ def private_feed():
     if photos_feed is None:
         flash("No friends have posted photos")
         return redirect(url_for('photos.index'))
-    return render_template("feed", photos=photos_feed)
+    return render_template("feed.html", photos=photos_feed)
 
 
 # Detail of a photo when clicked
@@ -195,4 +195,4 @@ def new_photo():
         photo.save()
         flash("Photo successfully posted!")
         return redirect(url_for('photos.index'))
-    return render_template("post_photo", form=form)
+    return render_template("post_photo.html", form=form)

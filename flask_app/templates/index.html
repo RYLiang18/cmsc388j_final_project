@@ -12,8 +12,17 @@
     {% endwith %}
     
     <div class="row">
-        {{ form.csrf_token }}
-        {{ form.user(class="form-control", placeholder="Search") }}
+        <div class="col">
+            <form action="" method="POST">
+                <div class="form-group">
+                    {{ form.csrf_token }}
+                    
+                    {{ form.user.label }}
+                    {{ form.user(class="form-control", placeholder="Search") }}
+                </div>
+                {{ form.submit(class="btn btn-primary")}}
+            </form>
+        </div>
     </div>
 
     <div class="card-columns">
