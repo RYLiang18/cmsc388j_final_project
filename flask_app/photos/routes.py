@@ -154,7 +154,7 @@ def private_feed():
 
 # Detail of a photo when clicked
 @photos.route("/photos/<photo_id>", methods=["GET", "POST"])
-def movie_detail(photo_id):
+def photo_detail(photo_id):
     info = photo_id.split("-")
     photo = Photo.objects(poster=photo_id[0], date=photo_id[1]).first()
     if photo is None:

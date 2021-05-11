@@ -25,7 +25,7 @@ from ..client import send_mail
 
 users = Blueprint('users', __name__)
 
-
+import re
 
 # registers the user
 @users.route("/register", methods=["GET", "POST"])
@@ -96,10 +96,11 @@ def logout():
 # Searches for a single user
 @users.route("/search/<query>", methods=["GET", "POST"])
 def search(query):
-    users = User.objects(username=query).first()
+    regex = re.compile(query, re.IGNORECASE)
+    users = User.objects(username=regex)
 
-    if user is None:
-        flash("User does not exist")
+    if users is None:
+        flash("User(s) does not exist")
         return redirect(url_for('photos.index'))
     
     return render_template("search_results.html", results=users)
