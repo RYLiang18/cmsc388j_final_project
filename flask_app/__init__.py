@@ -42,16 +42,16 @@ def create_app(test_config=None):
         ))
     mail = Mail(app)
 
-    # csp = {
-    #     'default-src': ['\'self\'',
-    #     '\'unsafe-inline\'',
-    #     'stackpath.bootstrapcdn.com',
-    #     'code.jquery.com',
-    #     'cdn.jsdelivr.net',
-    #     'cdnjs.cloudflare.com'],
-    #     'img-src': '*'
-    # }
-    #talisman = Talisman(app, content_security_policy=csp)
+    csp = {
+        'default-src': ['\'self\'',
+        '\'unsafe-inline\'',
+        'stackpath.bootstrapcdn.com',
+        'code.jquery.com',
+        'cdn.jsdelivr.net',
+        'cdnjs.cloudflare.com'],
+        'img-src': ['self', 'data:'],
+    }
+    talisman = Talisman(app, content_security_policy=csp)
 
     app.config.from_pyfile("config.py", silent=False)
     if test_config is not None:
