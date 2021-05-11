@@ -129,6 +129,7 @@ def follow(user):
     friend = User.objects(username=user).first()
     if friend is None:
         flash("Unable to follow! D:")
+        return redirect(url_for('users.profile', user=user))
     current_user.update(add_to_set__following=friend)
     return redirect(url_for('users.profile', user=user))
 
@@ -138,5 +139,6 @@ def unfollow(user):
     enemy = User.objects(username=user).first()
     if enemy is None:
         flash("Unable to unfollow! D:")
+        return redirect(url_for('users.profile', user=user))
     current_user.update(pull__following=enemy)
     return redirect(url_for('users.profile', user=user))

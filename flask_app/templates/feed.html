@@ -1,0 +1,37 @@
+{% extends "header.html" %}
+{% block content %}
+<h1>Just the people you follow!</h1>
+
+{% for photo in photos %}
+    <div class="card">
+        <h5
+            class="card-header"
+        >
+            {{photo.poster.username}}
+        </h5>
+        <img
+            class="card-img-top"
+            src="data:image/png;base64,{{photo.get_b64_image()}}"
+            alt=""
+        >
+
+        <div class="card-body">
+            <p class="card-text">
+                {{photo.caption}}
+            </p>
+            <p class="card-text">
+                <small class="text-muted">
+                    {{photo.date}}
+                </small>
+            </p>
+            <a
+                class="btn btn-primary stretched-link"
+                href="{{ url_for('photos.photo_detail', photo_id = photo.get_id())}}"
+            >
+                View
+            </a>
+        </div>
+    </div>
+{% endfor %}
+
+{% endblock %}

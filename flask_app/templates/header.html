@@ -1,15 +1,15 @@
 {% extends "base.html" %}
 {% block header %}
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
     <div class="container">
         <a 
             class="navbar-brand" 
             href="{{ url_for('photos.index') }}"
         >
-            <h2>
-                Memories
+            <h1>
+                <b>Memories</b>
                 </button>
-            </h2>
+            </h1>
         </a>
         <button 
             class="navbar-toggler" 
@@ -31,28 +31,46 @@
                 {% if current_user.is_authenticated %}
                     <li class="nav-item">
                         <a class="nav-link" href="{{ url_for('photos.new_photo') }}">
-                            Post
+                            <h3><b>Post</b></h3>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ url_for('users.account') }}">
-                            Account
+                        <a class="nav-link" href="{{ 
+                            url_for('photos.private_feed') 
+                        }}">
+                            <h3><b>Feed</b></h3>
                         </a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ url_for('users.logout') }}">
-                            Logout
+
+                    <li class="nav-item dropdown">
+                        <a 
+                            class="nav-link" 
+                            href="#" 
+                            id="navbarDropdown" 
+                            role="button" 
+                            data-toggle="dropdown" 
+                            aria-haspopup="true" 
+                            aria-expanded="false"
+                        >
+                            <h3><b></b>👥</b></h3>
                         </a>
-                    </li>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <a class="dropdown-item" href="{{ 
+                                url_for('users.profile', user=current_user.username) 
+                            }}">Profile</a>
+                            <a class="dropdown-item" href="{{ url_for('users.account') }}">Account</a>
+                            <a class="dropdown-item" href="{{ url_for('users.logout') }}">Logout</a>
+                        </div>
+                      </li>
                 {% else %}
                     <li class="nav-item">
                         <a class="nav-link" href="{{ url_for('users.login') }}">
-                            Login
+                            <h3><b>Login</b></h3>
                         </a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="{{ url_for('users.register') }}">
-                            Register
+                            <h3><b>Register</b></h3>
                         </a>
                     </li>
                 {% endif %}
